@@ -25,7 +25,8 @@ namespace Modul3HW6.Services
                     FileExtension = ".txt",
                     FileNameFormat = "hh.mm.ss dd.MM.yyyy",
                     TimeFormat = "hh:mm:ss",
-                    NumbeOfRowsToBackUp = 5
+                    NumbeOfRowsToBackUp = 5,
+                    BackUpDirectoryName = @"BackUp\"
                 }
             };
         }

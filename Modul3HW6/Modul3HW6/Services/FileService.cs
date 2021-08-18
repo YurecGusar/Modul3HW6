@@ -35,9 +35,9 @@ namespace Modul3HW6.Services
 
         public void MakeBackUp()
         {
-            var dirName = @"BackUp\";
+            var dirName = _config.LoggerConfig.BackUpDirectoryName;
             CreateDirectory(dirName);
-            File.Copy(_filePath, $"{GetFilePath(dirName, _unicValue.ToString())}");
+            File.Copy(_filePath, GetFilePath(dirName, _unicValue.ToString()));
             _unicValue++;
         }
 
