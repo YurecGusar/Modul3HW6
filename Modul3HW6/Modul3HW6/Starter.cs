@@ -10,6 +10,7 @@ namespace Modul3HW6
     {
         public void Run()
         {
+            Console.WriteLine("develop");
         }
     }
 }
