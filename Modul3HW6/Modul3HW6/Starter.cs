@@ -17,7 +17,6 @@ namespace Modul3HW6
 
         public void Run()
         {
-            Console.WriteLine(_config.LoggerConfig.DirectoryName);
         }
     }
 }
