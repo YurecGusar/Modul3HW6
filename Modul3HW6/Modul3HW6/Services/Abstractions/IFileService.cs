@@ -9,5 +9,6 @@ namespace Modul3HW6.Services.Abstractions
     public interface IFileService
     {
         public void WriteToFile(string value);
+        public void MakeBackUp();
     }
 }

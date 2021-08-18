@@ -12,20 +12,18 @@ namespace Modul3HW6.Services
     public class FileService : IFileService
     {
         private readonly IConfigService _config;
-        private readonly IComparer _comparer;
         private DirectoryInfo _dirInfo;
         private StreamWriter _streamWriter;
         private string _filePath;
+        private int _unicValue;
 
         public FileService(
-            IComparer comparer,
             IConfigService config)
         {
-            _comparer = comparer;
+            _unicValue = 1;
             _config = config;
-
-            CreateDirectory();
-            _filePath = GetFilePath();
+            CreateDirectory(_config.LoggerConfig.DirectoryName);
+            _filePath = GetFilePath(_config.LoggerConfig.DirectoryName);
         }
 
         public void WriteToFile(string value)
@@ -35,22 +33,34 @@ namespace Modul3HW6.Services
             _streamWriter.Close();
         }
 
-        private void CreateDirectory()
+        public void MakeBackUp()
         {
-            _dirInfo = new DirectoryInfo(_config.LoggerConfig.DirectoryName);
+            var dirName = @"BackUp\";
+            CreateDirectory(dirName);
+            File.Copy(_filePath, $"{GetFilePath(dirName, _unicValue.ToString())}");
+            _unicValue++;
+        }
+
+        private void CreateDirectory(string dirName)
+        {
+            _dirInfo = new DirectoryInfo(dirName);
             if (!_dirInfo.Exists)
             {
                 _dirInfo.Create();
             }
         }
 
-        private string GetFilePath()
+        private string GetFilePath(string dirName, string unicValue = "")
         {
-            var dirName = _config.LoggerConfig.DirectoryName;
+            if (unicValue != string.Empty)
+            {
+                unicValue = $"({unicValue})";
+            }
+
             var fileName = DateTime.UtcNow.ToString(_config.LoggerConfig.FileNameFormat);
             var fileExtension = _config.LoggerConfig.FileExtension;
 
-            return $"{dirName}{fileName}{fileExtension}";
+            return $"{dirName}{fileName}{unicValue}{fileExtension}";
         }
     }
 }
