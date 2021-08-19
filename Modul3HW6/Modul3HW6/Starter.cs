@@ -12,7 +12,6 @@ namespace Modul3HW6
 {
     public class Starter
     {
-        private static readonly StreamWriter _streamWriter = new StreamWriter("text");
         private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
 
         private IConfigService _config;
@@ -31,10 +30,26 @@ namespace Modul3HW6
         public void Run()
         {
             _loggerService.BackUpСondition += BackUp;
-            for (var i = 0; i <= 50; i++)
+
+            Task.Run(() =>
             {
-                _loggerService.CreateLog(LogStatus.INFO, $"qwerty {i}");
-            }
+                for (var i = 0; i < 50; i++)
+                {
+                    var k = i;
+                    Task.Run(async () => { await WriteAsync($"Method 2 {k}"); });
+                }
+            });
+
+            Task.Run(() =>
+            {
+                for (var i = 0; i < 50; i++)
+                {
+                    var k = i;
+                    Task.Run(async () => { await WriteAsync($"Method 1 {k}"); });
+                }
+            });
+
+            Console.ReadLine();
         }
 
         private void BackUp()
@@ -43,12 +58,11 @@ namespace Modul3HW6
             _fileService.MakeBackUp();
         }
 
-        private static async Task WriteAsync(string text)
+        private async Task WriteAsync(string message)
         {
             await _semaphoreSlim.WaitAsync();
 
-            await _streamWriter.WriteLineAsync(text);
-            await _streamWriter.FlushAsync();
+            await Task.Run(() => _loggerService.CreateLog(LogStatus.INFO, message));
 
             _semaphoreSlim.Release();
         }
