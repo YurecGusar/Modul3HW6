@@ -30,7 +30,7 @@ namespace Modul3HW6
         public void Run()
         {
             _loggerService.BackUpСondition += BackUp;
-
+            _fileService.ClearFolders();
             Task.Run(() =>
             {
                 for (var i = 0; i < 50; i++)

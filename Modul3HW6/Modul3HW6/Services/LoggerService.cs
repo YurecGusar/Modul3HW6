@@ -20,15 +20,17 @@ namespace Modul3HW6.Services
             _fileService = fileService;
             _config = config;
             _countLines = 0;
+
+            FileServiceInit();
         }
 
         public event Action BackUpСondition;
 
         public void CreateLog(LogStatus logType, string message)
         {
-            var log = $"{DateTime.UtcNow.ToString(_config.LoggerConfig.TimeFormat)} {logType}: {message}";
+            var log = $"{DateTime.UtcNow.ToString(_config.LoggerConfig.FileNameFormat)} {logType}: {message}";
             Console.WriteLine(log);
-            _fileService.WriteToFile(log);
+            _fileService.WriteToFileAsync(log);
             _countLines++;
             BackUpControl(_countLines);
         }
@@ -39,6 +41,14 @@ namespace Modul3HW6.Services
             {
             BackUpСondition.Invoke();
             }
+        }
+
+        private void FileServiceInit()
+        {
+            var dirName = _config.LoggerConfig.DirectoryName;
+            var fileName = DateTime.UtcNow.ToString(_config.LoggerConfig.TimeFormat);
+            var fileExtencion = _config.LoggerConfig.FileExtension;
+            _fileService.Init(dirName, fileName, fileExtencion);
         }
     }
 }
