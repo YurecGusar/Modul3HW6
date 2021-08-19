@@ -29,7 +29,7 @@ namespace Modul3HW6.Services
 
         public void Init(string dirName, string fileName, string fileExtension)
         {
-            var path = GetFilePath(_config.LoggerConfig.DirectoryName); /*$"{dirName}{fileName}{fileExtension}";*/
+            var path = GetFilePath(_config.LoggerConfig.DirectoryName);
             _filePath = path;
             CreateDirectory(dirName);
             _streamWriter = new StreamWriter(path, true);
@@ -54,11 +54,6 @@ namespace Modul3HW6.Services
             CreateDirectory(dirName);
             File.Copy(_filePath, GetFilePath(dirName, _unicValue.ToString()));
             _unicValue++;
-        }
-
-        public void ClearFolders()
-        {
-            _dirInfo.Delete();
         }
 
         private void CreateDirectory(string dirName)

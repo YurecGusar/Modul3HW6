@@ -12,6 +12,5 @@ namespace Modul3HW6.Services.Abstractions
         public void WriteToFile(string value);
         public Task WriteToFileAsync(string value);
         public void MakeBackUp();
-        public void ClearFolders();
     }
 }
